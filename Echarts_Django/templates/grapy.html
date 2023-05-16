@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="/static/img/favicon.png">
+
+    <title>FLATTY - Free Bootstrap 3 Landing Page</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/static/css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/static/css/main.css" rel="stylesheet">
+
+    <!-- Fonts from Google Fonts -->
+	<link href='http://fonts.googleapis.com/css?family=Lato:300,400,900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/semantic-ui@2.4.2/dist/semantic.min.css">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <!-- Fixed navbar -->
+    <div class="navbar navbar-default navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#"><b>Wolcome!</b></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#"></a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+        <div style="min-height: 70px;background-color: #3498db;" class="ui inverted fixed stackable red large menu">
+        <a class="item" href="/home/">Home</a>
+        {% if request.user.is_active %}
+        <div class="right menu">
+          <a class="item" >{{ request.user.username }}</a>
+          <a class="item" href="/logout/">退出</a>
+        </div>
+        {% else %}
+        <div class="right menu">
+            <a class="item" href="/regist/">注册</a>
+            <a class="item" href="/login/">登陆</a>
+        </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+
+	<div id="headerwrap">
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-6">
+					<h1>金融因果事理图谱<br/>
+					</h1>
+					<form class="form-inline"  action="/grapy/" method="post">
+                    <input type="text" name="node" class="form-control" placeholder="请输入您想查询的事件">
+                    <input type="submit" value="查询" class="btn btn-warning btn-lg">
+					</form>
+                    <div style="height: 30px;margin-top: 10px;margin-button: 20px;"><p style="color: #666!important; font－family：STFangsong;font-size:15px;">推荐搜索：{{cout_sort_data}}</p></div>
+                    <div class="row">
+                <div class="col-row">
+                    <p></p>
+                    <p>金融因果事理图谱是一个基于事理图谱的金融知识图谱，它将金融事件、金融事理、金融因果关系以及金融实体等金融知识以事理图谱的形式进行展示，以此来帮助金融从业人员更好地理解金融事件、金融事理、金融因果关系以及金融实体等金融知识，从而更好地进行金融分析和金融预测。</p>
+                </div><!-- col-lg-4 -->
+                    </div>
+				</div><!-- /col-lg-6 -->
+
+				<div class="col-lg-6">
+					<img class="img-responsive" src="/static/img/ipad-hand.png" alt="">
+				</div><!-- /col-lg-6 -->
+
+			</div><!-- /row -->
+		</div><!-- /container -->
+	</div><!-- /headerwrap -->
+
+    <div class="customizable-grids" >
+        <h3 class="h-color">事理图谱展示</h3>
+
+        {% if ctx %}
+            <div style="width: 100%;height: 700px;text-align: center;line-height: 704px;">
+                <h1>该数据库中未添加该实体</h1>
+            </div>
+        {% endif %}
+        {% if search_neo4j_data %}
+				<div class="agile-bottom-left">
+					<div id="container_search_one" style="width: 100%;height: 700px;"></div>
+				</div>
+        {% endif %}
+        {% if ctx %}
+            <div style="width: 100%;height: 700px;text-align: center;line-height: 704px;">
+                <h1>该数据库中未添加该实体</h1>
+            </div>
+        {% endif %}
+        {% if search_neo4j_data %}
+            <div class="agile-bottom-right">
+				<div id="container_search" style="width: 100%;height: 700px;"></div>
+            </div>
+        {% endif %}
+        <div class="clear" style="float:none;"></div>
+    </div>
+
+
+	<div class="container">
+		<hr>
+		<div class="row centered">
+			<div class="col-lg-3"></div>
+		</div><!-- /row -->
+		<hr>
+		<p class="centered">Created by YangJixing - Eventic Grapy - 2022</p>
+	</div><!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="/static/echarts.min.js"></script>
+    <script type="text/javascript">
+         {#查询单个事件的五层关系#}
+        var search_neo4j_data=[{{ search_neo4j_data|safe }}]
+        var data1=search_neo4j_data[0]['data']
+        var links1=search_neo4j_data[0]['links']
+        console.log(data1)
+        console.log(links1)
+        var myChart1 = echarts.init(document.getElementById('container_search'));
+        var categories1 = [{name: "事件"}, {name: "事件关系"}];
+        option1 = {
+            // 图的标题
+            title: {
+                text: '查询单个事件的多层关系',
+                 textStyle: {
+                  fontSize: 20
+                }
+            },
+            // 提示框的配置
+            tooltip: {
+                formatter: function (x) {
+                    return x.data.des;
+                }
+            },
+            // 工具箱
+            toolbox: {
+                // 显示工具箱
+                show: true,
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    // 还原
+                    restore: {
+                        show: true
+                    },
+                    // 保存为图片
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            legend: [{
+                // selectedMode: 'single',
+                data: categories1.map(function (a) {
+                    return a.name;
+                }),
+                textStyle:{
+                 fontSize:20,
+                }
+            }],
+            series: [{
+                type: 'graph', // 类型:关系图
+                layout: 'force', //图的布局，类型为力导图
+                symbolSize: 40, // 调整节点的大小
+                roam: true, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
+                edgeSymbol: ['circle', 'arrow'],
+                edgeSymbolSize: [2, 10],
+                edgeLabel: {
+                    normal: {
+                        textStyle: {
+                            fontSize: 20
+                        }
+                    }
+                },
+                force: {
+                    repulsion: 4000,
+                    edgeLength: [10, 50]
+                },
+                draggable: true,
+                lineStyle: {
+                    normal: {
+                        width: 2,
+                        color: '#4b565b',
+                    }
+                },
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        formatter: function (x) {
+                            return x.data.name;
+                        }
+                    }
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {}
+                    }
+                },
+
+                // 数据
+                data: data1,
+                links: links1,
+                categories: categories1,
+            }]
+        };
+        myChart1.setOption(option1);
+
+        {#查询单个事件的单层关系#}
+        var search_neo4j_one_data=[{{ search_neo4j_one_data|safe }}]
+        var data2=search_neo4j_one_data[0]['data']
+        var links2=search_neo4j_one_data[0]['links']
+        console.log(data2)
+        console.log(links2)
+        var myChart2 = echarts.init(document.getElementById('container_search_one'));
+        var categories2 = [{name: "事件"}, {name: "事件关系"}];
+        option2 = {
+            // 图的标题
+            title: {
+                text: '查询单个事件的单层关系',
+                textStyle: {
+                  fontSize: 20
+                }
+            },
+            // 提示框的配置
+            tooltip: {
+                formatter: function (x) {
+                    return x.data.des;
+                }
+            },
+            // 工具箱
+            toolbox: {
+                // 显示工具箱
+                show: true,
+                feature: {
+                    mark: {
+                        show: true
+                    },
+                    // 还原
+                    restore: {
+                        show: true
+                    },
+                    // 保存为图片
+                    saveAsImage: {
+                        show: true
+                    }
+                }
+            },
+            legend: [{
+                // selectedMode: 'single',
+                data: categories2.map(function (a) {
+                    return a.name;
+                }),
+                textStyle:{
+                 fontSize:20,
+                }
+            }],
+            series: [{
+                type: 'graph', // 类型:关系图
+                layout: 'force', //图的布局，类型为力导图
+                symbolSize: 40, // 调整节点的大小
+                roam: true, // 是否开启鼠标缩放和平移漫游。默认不开启。如果只想要开启缩放或者平移,可以设置成 'scale' 或者 'move'。设置成 true 为都开启
+                edgeSymbol: ['circle', 'arrow'],
+                edgeSymbolSize: [2, 10],
+                edgeLabel: {
+                    normal: {
+                        textStyle: {
+                            fontSize: 20
+                        }
+                    }
+                },
+                force: {
+                    repulsion: 3500,
+                    edgeLength: [10, 50]
+                },
+                draggable: true,
+                lineStyle: {
+                    normal: {
+                        width: 2,
+                        color: '#4b565b',
+                    }
+                },
+                edgeLabel: {
+                    normal: {
+                        show: true,
+                        formatter: function (x) {
+                            return x.data.name;
+                        }
+                    }
+                },
+                label: {
+                    normal: {
+                        show: true,
+                        textStyle: {}
+                    }
+                },
+
+                // 数据
+                data: data2,
+                links: links2,
+                categories: categories2,
+            }]
+        };
+        myChart2.setOption(option2);
+    </script>
+  </body>
+</html>

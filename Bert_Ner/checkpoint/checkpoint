@@ -1,0 +1,2 @@
+model_checkpoint_path: "bert_bilstm_crf.weights"
+all_model_checkpoint_paths: "bert_bilstm_crf.weights"
